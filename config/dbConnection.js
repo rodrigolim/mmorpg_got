@@ -1,23 +1,37 @@
-/* importar o mongoDB */
-var mongo = require('mongodb');
+/* importar o mongodb */
+var mongo = require('mongodb').MongoClient;
+var assert = require('assert');
 
+const url = "mongodb://localhost:27017";
+const dbName = "got";
 
-var connMongoDB = function(){
-    console.log('entrou na função de conexão');
+var connMongoDB = function(dados) {
+    mongo.connect(url, function(err, client) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
 
-    var db = new mongo.Db(
-           'got', 
-           new mongo.Server(
-               'localhost', //string contendo o endereço do servidor
-               27017, //porta de conexão
-               {}
-           ),
-           {} 
-        );
+        const db = client.db(dbName).collection(dados.collection);  
+        query(db, dados);
+        client.close();
+    });
+};
 
-    return db;
+function query(db, dados) {     
+    switch (dados.operacao) {
+        case "inserir":
+                db
+                .insertOne(dados.registros)
+                .then(result => {
+                    const { insertedId } = result;
+                    // Do something with the insertedId
+                    console.log('Inserted document with _id: '+insertedId);
+                    });
+            break;
+        default:
+            break;
+    }
 }
 
 module.exports = function(){
-  return connMongoDB;
+    return connMongoDB;
 }
