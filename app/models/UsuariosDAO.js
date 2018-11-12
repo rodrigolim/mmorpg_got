@@ -13,6 +13,10 @@ UsuariosDAO.prototype.inserirUsuario = function(usuario, res){
         
 }
 
+UsuariosDAO.prototype.autenticar = function(usuario){
+   //aqui tem que ser desenvolvido     
+}
+
 module.exports = function(){
     return UsuariosDAO;
 }
