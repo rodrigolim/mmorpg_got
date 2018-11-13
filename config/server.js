@@ -20,6 +20,10 @@ var app = express();
 app.set('view engine', 'ejs');
 app.set('views', './app/views');
 
+/* setar as configurações do Banco de dados MongoDB */
+app.set('DB_URI','mongodb://asterix:qw123456@ds061391.mlab.com:61391/got');
+app.set('DB_NAME','got');
+
 /* configurar o middleware express.static */
 app.use(express.static('./app/public'));
 
@@ -40,7 +44,6 @@ app.use(expressSession({
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign()
 	.include('app/routes')
-	.then('config/dbConnection.js')
 	.then('app/models')
 	.then('app/controllers')
 	.into(app);

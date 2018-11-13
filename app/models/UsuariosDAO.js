@@ -1,26 +1,27 @@
-function UsuariosDAO(connection){
-    this._connection = connection;
+var mongo = require('mongodb').MongoClient;
+
+function UsuariosDAO(application){
+    this._app = application;
+    this._DBurl = application.get('DB_URI');
+    this._DBName = application.get('DB_NAME');
 }
 
 UsuariosDAO.prototype.inserirUsuario = function(usuario, res){
-    // var dados = {
-    //              operacao: "inserir",
-    //              registros: usuario,
-    //              collection: "usuarios"
-    //             };
+    mongo.connect(this._DBurl, { useNewUrlParser: true }, function(err, database) {
+        if(err) console.log('Problemas ao conectar na base de dados.');         
 
-    //     this._connection(dados);
+        const db = database.db(this._DBName).collection('usuarios'); 
 
-
-    this._connection.then(function(db) {
-        db.collection('usuario').find({}).toArray().then(function(docs) {
+        db
+        .insertOne(usuario)
+        .then(result => {
+            const { insertedId } = result;
+            console.log('Registro inserido com _id: '+insertedId);
+        },
+        endCalback => {
+            database.close();
         });
-      });
-
-      
-
-  //  db.collection.insert(usuario);
-       
+    });      
 }
 
 UsuariosDAO.prototype.autenticar = function(usuario){
