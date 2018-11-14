@@ -20,12 +20,34 @@ UsuariosDAO.prototype.inserirUsuario = function(usuario, res){
         },
         endCalback => {
             database.close();
-        });
+        }); 
     });      
 }
 
-UsuariosDAO.prototype.autenticar = function(usuario){
-   //aqui tem que ser desenvolvido     
+UsuariosDAO.prototype.autenticar = function(usuario, req, res){
+    mongo.connect(this._DBurl, { useNewUrlParser: true }, function(err, database) {
+        if(err) console.log('Problemas ao conectar na base de dados.');         
+
+        const db = database.db(this._DBName).collection('usuarios'); 
+
+        db.find({usuario: {$eq: usuario.usuario}, senha:{$eq: usuario.senha}}).toArray(function(err, result) {
+ 
+            if(result[0] != undefined){
+               req.session.autorizado = true;
+               req.session.usuario = result[0].usuario;
+               req.session.casa = result[0].casa;
+           } 
+
+           if(req.session.autorizado){
+               res.redirect("jogo");
+           } else {
+              res.render('index', { validacao: {}, dadosForm: {} }); 
+           }
+
+        });
+
+        database.close();
+    });     
 }
 
 module.exports = function(){
