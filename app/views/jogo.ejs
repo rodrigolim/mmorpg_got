@@ -15,54 +15,35 @@
 		<link href="css/style.css" rel="stylesheet">
 
 		<script>
-			$(document).ready( function(){
-			   $('#btn_sair').click( function(){
-				   window.location.href = '/sair';
-			   })
-			}); 
 
-			$('#btn_suditos').click(function(){
-				$('#msg').hide();
+			$(document).ready(function(){
 
-				$.ajax({
-					url: '/suditos',
-					method: "get",
-					success: function(data){
-						$('#acoes').html(data);
-					}
+				$('#btn_sair').click(function(){
+					window.location.href = '/sair';
 				});
+
+				$('#btn_suditos').click(function(){
+					$.ajax({
+						url: '/suditos',
+						method: 'get',
+						success: function(data){
+							$('#acoes').html(data);
+						}
+					});
+				});
+
+				$('#btn_pergaminho').click(function(){
+					$.ajax({
+						url: '/pergaminhos',
+						method: 'get',
+						success: function(data){
+							$('#acoes').html(data);
+						}
+					});
+				});
+
 			});
 
-			$('#btn_pergaminho').click(function(){
-				$('#msg').hide();
-				
-				$.ajax({
-					url: '/pergaminhos',
-					method: "get",
-					success: function(data){
-						$('#acoes').html(data);
-
-						clearTimeout(timerId);
-						cronometro();
-					}
-				});
-			});
-
-			var timerId = null;
-			function cronometro(){				
-				$('.tempo_restante').each(function(){
-					var segundos = $(this).html();
-					var segundos_atuais = parseInt(segundos) - 1;
-
-					if(segundos_atuais < 0){
-						window.location.href= "/jogo?msg=C";
-					} else {
-						$(this).html(segundos_atuais);
-					}
-				});
-
-				timerId = setTimeout('cronometro()', 1000);
-			}
 		</script>
 
 	</head>
@@ -81,7 +62,7 @@
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 casa">
-					<img src="images/casa_<%=img_casa%>.jpg" />
+					<img src="images/casa_<%= img_casa %>.jpg" />
 				</div>
 
 	    		<div class="col-sm-9">
@@ -112,7 +93,7 @@
 			<div class="row">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-9">
-					<div class="acoes">X</div>					
+					<div class="acoes" id="acoes"></div>					
 				</div>
 			</div>
 			
@@ -123,12 +104,12 @@
 			
 				<div class="row">
 					<div class="col-sm-1">
-						<img src="images/outros/suditos.jpg" title="Aldeões" alt="Aldeões"/>
+						<img src="images/outros/suditos.jpg" title="Aldeões" alt="Aldeões" id="btn_suditos"	/>
 						<span><%=jogo.suditos%></span>
 					</div>
 					
 					<div class="col-sm-1">
-						<img src="images/outros/pergaminho.jpg" title="Pergaminhos" alt="Pergaminhos"/>
+						<img src="images/outros/pergaminho.jpg" title="Pergaminhos" alt="Pergaminhos" id="btn_pergaminho"/>
 					</div>
 					
 					<div class="col-sm-8"></div>

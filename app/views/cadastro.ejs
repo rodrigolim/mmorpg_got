@@ -13,6 +13,7 @@
 	
 		<!-- incluindo css -->
 		<link href="css/style.css" rel="stylesheet">
+
 	</head>
 
 	<body class="body-index">
@@ -21,7 +22,7 @@
 			<div class="container">
 				<form class="form-inline form-entrar">
 					<div class="form-group">				
-						<button type="button" class="btn btn-success" value="Voltar" onClick="history.go(-1)">Voltar</button>
+						<button type="button" class="btn btn-success">Voltar</button>
 					</div>
 				</form>
 			</div>
@@ -29,18 +30,18 @@
 		</nav>
 
 	    <div class="container">
-				
-			<% if(validacao.length > 0) { %>
-			   <div class="alert alert-danger">
-				   <strong>Atenção!</strong>
-				   <ul>
-					   <% for(var i =0; i< validacao.length; i++) { %>
-                          <li> <%= validacao[i].msg %></li>
-					   <% } %>
-				   </ul>
-			   </div>
-			<% } %>
 
+			<% if(validacao.length > 0){ %>
+				<div class="alert alert-danger">
+					<strong>Atenção</strong>
+					<ul>
+						<% for(var i = 0; i < validacao.length; i++){ %>
+							<li><%= validacao[i].msg %></li>
+						<% } %>
+					</ul>
+				</div>
+			<% } %>
+	    		
 			<form class="form-cadastro" action="/cadastrar" method="POST">
 			
 				<div class="row">
