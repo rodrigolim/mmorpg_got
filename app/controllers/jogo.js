@@ -13,7 +13,6 @@ module.exports.jogo = function(application, req, res){
 	var casa = req.session.casa;
 
 	var JogoDAO = new application.app.models.JogoDAO(application);
-
 	JogoDAO.iniciaJogo(res, usuario, casa, msg);	
 }
 

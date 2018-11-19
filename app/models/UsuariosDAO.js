@@ -16,7 +16,7 @@ UsuariosDAO.prototype.inserirUsuario = function(usuario, res){
         .insertOne(usuario)
         .then(result => {
             const { insertedId } = result;
-            console.log('Registro inserido com _id: '+insertedId);
+            console.log('Registro inserido na collection "usuarios" com _id: '+insertedId);
         },
         endCalback => {
             database.close();

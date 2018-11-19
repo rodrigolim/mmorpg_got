@@ -9,21 +9,29 @@ function JogoDAO(application){
 }
 
 JogoDAO.prototype.gerarParametros = function(usuario){
-	this._connection.open( function(err, mongoclient){
-		mongoclient.collection("jogo", function(err, collection){
-			collection.insert({
-				usuario: usuario,
-				moeda: 15,
-				suditos: 10,
-				temor: Math.floor(Math.random() * 1000),
-				sabedoria: Math.floor(Math.random() * 1000),
-				comercio: Math.floor(Math.random() * 1000),
-				magia: Math.floor(Math.random() * 1000)
-			});
+	mongo.connect(this._DBurl, { useNewUrlParser: true }, function(err, database) {
+        if(err) console.log('Problemas ao conectar na base de dados.');         
 
-			mongoclient.close();
-		});
-	});
+		const db = database.db(this._DBName).collection('jogo'); 
+	   
+		db
+        .insertOne({
+			usuario: usuario,
+			moeda: 15,
+			suditos: 10,
+			temor: Math.floor(Math.random() * 1000),
+			sabedoria: Math.floor(Math.random() * 1000),
+			comercio: Math.floor(Math.random() * 1000),
+			magia: Math.floor(Math.random() * 1000)
+		})
+        .then(result => {
+            const { insertedId } = result;
+            console.log('Registro inserido na collection "jogo" com _id: '+insertedId);
+        },
+        endCalback => {
+            database.close();
+        }); 
+    }); 
 }
 
 JogoDAO.prototype.iniciaJogo = function(res, usuario, casa, msg){
