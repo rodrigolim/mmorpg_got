@@ -62,8 +62,14 @@ JogoDAO.prototype.acao = function(acao){
 			case 4: tempo = 5 * 60 * 60000; break;
 		}	
 		acao.acao_termina_em = date.getTime() + tempo;
-		dbAcao.insert(acao);
 		
+		dbAcao
+        .insertOne(acao)
+        .then(result => {
+            const { insertedId } = result;
+            console.log('Registro inserido na collection "acao" com _id: '+insertedId);
+        }); 
+
 
 		const dbJogo = database.db(this._DBName).collection('jogo'); 
 		var moedas = null;
@@ -74,7 +80,7 @@ JogoDAO.prototype.acao = function(acao){
 			case 4: moedas = -1 * acao.quantidade; break;
 		}	
 
-		dbJogo.update({usuario: acao.usuario}, { $inc: {moeda: moedas}});
+		dbJogo.updateOne({usuario: acao.usuario}, { $inc: {moeda: moedas}});
 
 		database.close();
 	});

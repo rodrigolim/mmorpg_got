@@ -37,13 +37,13 @@ module.exports.pergaminhos = function(application, req, res){
 		res.send('Usuário precisa fazer login');
 		return;	
 	}
+	res.render("pergaminhos", {validacao: {}});
 
+	// var JogoDAO = new application.app.models.JogoDAO(application);
 
-	var JogoDAO = new application.app.models.JogoDAO(application);
+	// var usuario = req.session.usuario;
 
-	var usuario = req.session.usuario;
-
-	JogoDAO.getAcoes(usuario, res);
+	// JogoDAO.getAcoes(usuario, res);
 
 }
 
