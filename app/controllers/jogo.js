@@ -43,8 +43,6 @@ module.exports.pergaminhos = function(application, req, res){
 	var usuario = req.session.usuario;
 
 	JogoDAO.getAcoes(usuario, res);
-
-	res.render("pergaminhos", {validacao: {}});
 }
 
 module.exports.ordenar_acao_sudito = function(application, req, res){

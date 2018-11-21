@@ -91,14 +91,16 @@ JogoDAO.prototype.getAcoes = function(usuario, res){
         if(err) console.log('Problemas ao conectar na base de dados.');         
 
 		const db = database.db(this._DBName).collection('acao'); 
-		
-		//acao_termina_em: {$gt:momento_atual}
 
-		db.find({usuario : usuario}).toArray(function(err, result) {
+		var date = new Date();
+		var momento_atual = date.getTime();
+
+		db.find({usuario : usuario, acao_termina_em: {$gt:momento_atual}}).toArray(function(err, result) {
 			res.render("pergaminhos", {acoes: result});
-        });
-
-        database.close(); 
+		},
+        endCalback => {
+            database.close();
+        }); 
     }); 
 }
 
