@@ -70,7 +70,7 @@ JogoDAO.prototype.acao = function(acao){
             console.log('Registro inserido na collection "acao" com _id: '+insertedId);
         }); 
 
-
+		
 		const dbJogo = database.db(this._DBName).collection('jogo'); 
 		var moedas = null;
 		switch(parseInt(acao.acao)){
